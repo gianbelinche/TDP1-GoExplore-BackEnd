@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "TDP-1 GoExplore"
+version = "0.1.0"
+description = "GoExplore Backend"
+authors = ["Gianluca Belinche <gianbelinche@gmail.com>"]
+packages = [
+    { include = "app" },
+    { include = "app/**/*.py" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.66.0"
+uvicorn = "^0.14.0"
+pydantic = {extras = ["email"], version = "^1.8.1"}
+pytest = "^6.2.3"
+pytest-cov = "^2.11.1"
+requests = "^2.25.1"
+peewee = "^3.14.4"
+python-multipart = "^0.0.5"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.2.0"}
+python-dotenv = "^0.17.0"
+pymongo = "^3.11.3"
+uuid = "^1.30"
+alembic = "^1.6.5"
+psycopg2= "^2.9.1"
+psycopg2-binary= "^2.9.1"
+beautifulsoup4 = "^4.11.1"
+
+[tool.poetry.extras]
+testing = ["pytest", "pytest-cov"]
+
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.11.1"
+flake8 = "^3.9.0"
+black = "^20.8b1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+skip-string-normalization = true
