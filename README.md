@@ -1,4 +1,4 @@
-# ACP1-firenbn
+# TDP1-GoExplore
 
 Repositorio para el backend del proyecto GoExplore de la materia Taller de Desarrollo de Proyectos I en FIUBA.
 
