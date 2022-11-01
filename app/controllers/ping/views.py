@@ -7,6 +7,6 @@ router = APIRouter()
 
 
 @router.get('/ping', status_code=status.HTTP_200_OK)
-def ping():
+async def ping():
     logger.info("Ping endpoint")
     return "pong"

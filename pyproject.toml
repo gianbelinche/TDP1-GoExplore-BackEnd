@@ -2,7 +2,10 @@
 name = "TDP-1 GoExplore"
 version = "0.1.0"
 description = "GoExplore Backend"
-authors = ["Gianluca Belinche <gianbelinche@gmail.com>"]
+authors = [
+    "Gianluca Belinche <gianbelinche@gmail.com>",
+    "Julian Ventura <jventura@fi.uba.ar>"
+]
 packages = [
     { include = "app" },
     { include = "app/**/*.py" },
@@ -10,30 +13,15 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-fastapi = "^0.66.0"
-uvicorn = "^0.14.0"
-pydantic = {extras = ["email"], version = "^1.8.1"}
-pytest = "^6.2.3"
-pytest-cov = "^2.11.1"
-requests = "^2.25.1"
-peewee = "^3.14.4"
-python-multipart = "^0.0.5"
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-python-jose = {extras = ["cryptography"], version = "^3.2.0"}
-python-dotenv = "^0.17.0"
-pymongo = "^3.11.3"
-uuid = "^1.30"
-alembic = "^1.6.5"
-psycopg2= "^2.9.1"
-psycopg2-binary= "^2.9.1"
-beautifulsoup4 = "^4.11.1"
+fastapi = "^0.85.2"
+uvicorn = {extras = ["standard"], version = "^0.19.0"}
+pymongo = "^4.3.2"
 
 [tool.poetry.extras]
 testing = ["pytest", "pytest-cov"]
 
 
 [tool.poetry.dev-dependencies]
-pre-commit = "^2.11.1"
 flake8 = "^3.9.0"
 black = "^20.8b1"
 

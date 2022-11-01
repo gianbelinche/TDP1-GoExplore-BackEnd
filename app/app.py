@@ -1,7 +1,8 @@
-import os
-import uvicorn
 from fastapi import FastAPI
-from app.api.ping import router as ping_router
+from app.controllers.ping import router as ping_router
+from app.controllers.users import router as users_router
+from app.config.constants import PORT
+from app.utils.config import log_config
 
 from app.config.logger import setup_logger
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,8 +24,7 @@ app.add_middleware(
 
 # Routes
 app.include_router(ping_router, prefix="/api")
+app.include_router(users_router, prefix="/api")
 
-if __name__ == "__main__":
-    port = os.environ.get('PORT', 8080)
-    logger.info("Using port: " + port)
-    uvicorn.run(app, host='0.0.0.0', port=port)
+logger.info(f"Server started on port: {PORT}")
+log_config()
