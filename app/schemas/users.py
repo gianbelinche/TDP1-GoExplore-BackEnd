@@ -1,13 +1,13 @@
 from __future__ import annotations
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr
 from app.models.user import User
 
 
 class UserSchemaBase(BaseModel):
-    first_name: str
-    last_name: str
-    email: str
-    id: str
+    first_name: str = Field(..., min_length=3)
+    last_name: str = Field(..., min_length=3)
+    email: EmailStr
+    id: str = Field(..., min_length=1)
 
 
 class UserCreateSchema(UserSchemaBase):
@@ -20,6 +20,6 @@ class UserSchema(UserSchemaBase):
         return UserSchema(
             first_name=user.first_name,
             last_name=user.last_name,
-            email=user.email,
+            email=EmailStr(user.email),
             id=user.id if user.id else ""
         )

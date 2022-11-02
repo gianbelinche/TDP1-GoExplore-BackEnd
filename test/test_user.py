@@ -58,7 +58,6 @@ def test_user_create_existing_user_fails():
     TestCase().assertEqual(data['detail'], "User already exists")
 
 
-@pytest.mark.skip(reason="Work in progress")
 def test_user_create_wrong_body():
     body = {
         'id': 'anId',
@@ -74,6 +73,9 @@ def test_user_create_wrong_body():
     }
 
     invalid_bodies = generate_invalid(body, invalid_variations)
+
+    # NOTE: If one of this tests fails, we don´t get enough information
+    # we just know that the hole suit failed.
 
     for inv_body in invalid_bodies:
         response = client.post(URI, json=inv_body)
