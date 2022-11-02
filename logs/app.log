@@ -1,1 +1,6 @@
 [2022-10-31 20:39:53,001] INFO [app.api.ping.views.ping:11] Ping endpoint                         [level: INFO]
+[2022-11-01 23:36:49,004] ERROR [app.repositories.config.<module>:13] Server not available                         [level: ERROR]
+[2022-11-01 23:36:49,044] INFO [app.app.<module>:29] Server started on port: 8080                         [level: INFO]
+[2022-11-01 23:36:49,044] INFO [app.utils.config.log_config:9] Configuration:                          [level: INFO]
+[2022-11-01 23:36:49,044] INFO [app.utils.config.log_config:10]   - PORT: 8080                         [level: INFO]
+[2022-11-01 23:36:49,045] INFO [app.utils.config.log_config:11]   - DB_URL: None                         [level: INFO]

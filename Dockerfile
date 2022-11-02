@@ -15,6 +15,7 @@ RUN pip install "poetry==1.2.2"
 WORKDIR /root
 ADD app/ app/
 ADD logs/ logs/
+ADD test/ test/
 COPY docker/entrypoint.sh poetry.lock pyproject.toml ./
 
 RUN poetry install

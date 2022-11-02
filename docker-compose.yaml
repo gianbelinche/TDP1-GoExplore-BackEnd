@@ -2,8 +2,10 @@ version: "3"
 services:
     proy1-backend:
         build: ./
+        image: proy1-backend
         volumes:
             - ./app:/root/app
+            - ./test:/root/test
         container_name: proy1-backend
         ports:
             - ${PORT}:${PORT}
@@ -11,8 +13,6 @@ services:
             - .env
         networks:
             - proy1-net
-        depends_on:
-            - proy1-mongo
     
     proy1-mongo:
         image: mongo
