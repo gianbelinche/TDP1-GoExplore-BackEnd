@@ -124,6 +124,40 @@ def test_experience_create_with_incorrect_dates():
     assert data['detail'] == "Experience has incorrect calendar"
 
 
+def test_experience_create_with_incorrect_dates_format():
+    body = {
+        'title': 'aTitle',
+        'description': 'aDescription',
+        'images': ['image1', 'image2', 'image3'],
+        'preview_image': 'preview_image',
+        'calendar': {'start_date': '2021/01/01', 'end_date': '2021/01/05', 'quota': 10},
+        'owner': 'anOwner',
+        'id': 'anId',
+    }
+    response = client.post(URI, json=body)
+
+    data = response.json()
+    assert response.status_code == 400
+    assert data['detail'] == "Experience has incorrect calendar"
+
+
+def test_experience_create_with_incorrect_dates_format2():
+    body = {
+        'title': 'aTitle',
+        'description': 'aDescription',
+        'images': ['image1', 'image2', 'image3'],
+        'preview_image': 'preview_image',
+        'calendar': {'start_date': 'startdate', 'end_date': 'enddate', 'quota': 10},
+        'owner': 'anOwner',
+        'id': 'anId',
+    }
+    response = client.post(URI, json=body)
+
+    data = response.json()
+    assert response.status_code == 400
+    assert data['detail'] == "Experience has incorrect calendar"
+
+
 def test_experience_create_with_equal_dates():
     body = {
         'title': 'aTitle',

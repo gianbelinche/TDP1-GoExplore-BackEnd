@@ -39,9 +39,11 @@ class ExperienceFactory:
         start_date = calendar["start_date"]
         end_date = calendar["end_date"]
         quota = calendar["quota"]
-
-        start_dt = datetime.strptime(start_date, '%Y-%m-%d')
-        end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+        try:
+            start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+            end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+        except ValueError:
+            raise ExperienceIncorrectCalendarError()
         return [
             {"date": dt.strftime('%Y-%m-%d'), "quota": quota}
             for dt in daterange(start_dt, end_dt)
