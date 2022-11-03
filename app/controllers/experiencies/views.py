@@ -6,9 +6,8 @@ from app.schemas.experience import ExperienceCreateSchema, ExperienceSchema
 from app.commands.experiencies import (
     CreateExperienceCommand,
     GetExperienceCommand,
-    ExperienceAlreadyExistsError,
-    ExperienceNotFoundError,
 )
+from app.utils.error import GoExploreError
 
 
 logger = setup_logger(name=__name__)
@@ -25,7 +24,7 @@ async def create_experience(experience_body: ExperienceCreateSchema):
         repository = PersistentExperienceRepository()
         experience = CreateExperienceCommand(repository, experience_body).execute()
         return experience
-    except ExperienceAlreadyExistsError as e:
+    except GoExploreError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:
         logger.error(e)
