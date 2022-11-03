@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-from unittest import TestCase
 import pytest
 from test.utils import generate_invalid
 
@@ -23,8 +22,8 @@ def clear_db():
 def test_get_user_not_exists():
     response = client.get(URI + "/notexists")
     data = response.json()
-    TestCase().assertEqual(response.status_code, 404)
-    TestCase().assertEqual(data['detail'], "User not found")
+    assert response.status_code == 404
+    assert data['detail'] == "User not found"
 
 
 def test_user_create_succesfully():
@@ -32,13 +31,13 @@ def test_user_create_succesfully():
         'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
-        'email': 'email@mail.com'
+        'email': 'email@mail.com',
     }
     response = client.post(URI, json=body)
 
     data = response.json()
-    TestCase().assertEqual(response.status_code, 201)
-    TestCase().assertDictEqual(body, data)
+    assert response.status_code == 201
+    assert body == data
 
 
 def test_user_create_existing_user_fails():
@@ -46,7 +45,7 @@ def test_user_create_existing_user_fails():
         'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
-        'email': 'email@mail.com'
+        'email': 'email@mail.com',
     }
     # Created first time
     client.post(URI, json=body)
@@ -54,8 +53,8 @@ def test_user_create_existing_user_fails():
     response = client.post(URI, json=body)
 
     data = response.json()
-    TestCase().assertEqual(response.status_code, 400)
-    TestCase().assertEqual(data['detail'], "User already exists")
+    assert response.status_code == 400
+    assert data['detail'] == "User already exists"
 
 
 def test_user_create_wrong_body():
@@ -63,7 +62,7 @@ def test_user_create_wrong_body():
         'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
-        'email': 'email@mail.com'
+        'email': 'email@mail.com',
     }
     invalid_variations = {
         'id': [None, ''],
@@ -79,7 +78,7 @@ def test_user_create_wrong_body():
 
     for inv_body in invalid_bodies:
         response = client.post(URI, json=inv_body)
-        TestCase().assertEqual(response.status_code, 422)
+        assert response.status_code == 422
 
 
 def test_user_create_and_retrieve_successfully():
@@ -88,9 +87,9 @@ def test_user_create_and_retrieve_successfully():
         'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
-        'email': 'email@mail.com'
+        'email': 'email@mail.com',
     }
     client.post(URI, json=body)
     response = client.get(URI + f"/{uid}")
     data = response.json()
-    TestCase().assertDictEqual(body, data)
+    assert body == data
