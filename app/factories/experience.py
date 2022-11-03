@@ -2,6 +2,7 @@ from app.models.experience import Experience
 from app.schemas.experience import ExperienceCreateSchema
 from app.models.errors import ExperienceIncorrectCalendarError
 from datetime import timedelta, datetime
+import uuid
 
 
 class ExperienceFactory:
@@ -9,7 +10,7 @@ class ExperienceFactory:
         if not self._is_valid_calendar(experience_data.calendar):
             raise ExperienceIncorrectCalendarError()
         calendar = self._create_new_calendar(experience_data.calendar)
-
+        id = str(uuid.uuid4()) if not experience_data.id else experience_data.id
         return Experience(
             title=experience_data.title,
             description=experience_data.description,
@@ -17,7 +18,7 @@ class ExperienceFactory:
             preview_image=experience_data.preview_image,
             calendar=calendar,
             owner=experience_data.owner,
-            id=experience_data.id,
+            id=id,
         )
 
     def _is_valid_calendar(self, calendar: dict) -> bool:

@@ -247,3 +247,19 @@ def test_experience_create_duplicate_with_different_fields_fails():
     data = response.json()
     assert response.status_code == 400
     assert data["detail"] == "Experience already exists"
+
+
+def test_experience_create_without_id():
+    body = {
+        'title': 'aTitle',
+        'description': 'aDescription',
+        'images': [],
+        'preview_image': 'preview_image',
+        'calendar': {'start_date': '2021-01-01', 'end_date': '2021-01-01', 'quota': 10},
+        'owner': 'anOwner',
+    }
+    response = client.post(URI, json=body)
+
+    data = response.json()
+    assert response.status_code == 201
+    assert data["id"] != ""

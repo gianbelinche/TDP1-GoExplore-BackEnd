@@ -1,5 +1,6 @@
 from __future__ import annotations
 from pydantic import BaseModel, Field
+from typing import Optional
 from app.models.experience import Experience
 
 
@@ -9,16 +10,17 @@ class ExperienceSchemaBase(BaseModel):
     images: list[str] = Field(..., min_length=1)
     preview_image: str = Field(..., min_length=1)
     owner: str = Field(..., min_length=1)
-    id: str = Field(..., min_length=1)
 
 
 class ExperienceCreateSchema(ExperienceSchemaBase):
     calendar: dict
+    id: Optional[str]
     pass
 
 
 class ExperienceSchema(ExperienceSchemaBase):
     calendar: list
+    id: str
 
     @classmethod
     def from_model(cls, experience: Experience) -> ExperienceSchema:
@@ -29,5 +31,5 @@ class ExperienceSchema(ExperienceSchemaBase):
             preview_image=experience.preview_image,
             calendar=experience.calendar,
             owner=experience.owner,
-            id=experience.id if experience.id else "",
+            id=experience.id,
         )
