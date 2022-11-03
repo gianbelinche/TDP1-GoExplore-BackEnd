@@ -8,19 +8,10 @@ class Experience:
         description: str,
         images: list[str],
         preview_image: str,
-        calendar: dict[str, str, int],
+        calendar: list[dict[str, int]],
         owner: str,
         id: str,
     ):
-        if (
-            "start_date" not in calendar
-            or "end_date" not in calendar
-            or "quota" not in calendar
-            or len(calendar) != 3
-            or calendar["start_date"] > calendar["end_date"]
-            or calendar["quota"] < 0
-        ):
-            raise ExperienceIncorrectCalendarError()
         self.title = title
         self.description = description
         self.images = images

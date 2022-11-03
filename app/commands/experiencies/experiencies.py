@@ -5,6 +5,7 @@ from app.repositories.experience import (
     ExperienceRepository,
 )
 from app.config.logger import setup_logger
+from app.factories.experience import ExperienceFactory
 
 logger = setup_logger(__name__)
 
@@ -19,15 +20,7 @@ class CreateExperienceCommand:
         self.experience_data = experience
 
     def execute(self) -> ExperienceSchema:
-        experience = Experience(
-            title=self.experience_data.title,
-            description=self.experience_data.description,
-            images=self.experience_data.images,
-            id=self.experience_data.id,
-            preview_image=self.experience_data.preview_image,
-            calendar=self.experience_data.calendar,
-            owner=self.experience_data.owner,
-        )
+        experience = ExperienceFactory().create(self.experience_data)
         already_exists = self.experience_repository.experience_exists(experience.id)
         if already_exists:
             raise ExperienceAlreadyExistsError

@@ -8,16 +8,18 @@ class ExperienceSchemaBase(BaseModel):
     description: str = Field(..., min_length=3)
     images: list[str] = Field(..., min_length=1)
     preview_image: str = Field(..., min_length=1)
-    calendar: dict
     owner: str = Field(..., min_length=1)
     id: str = Field(..., min_length=1)
 
 
 class ExperienceCreateSchema(ExperienceSchemaBase):
+    calendar: dict
     pass
 
 
 class ExperienceSchema(ExperienceSchemaBase):
+    calendar: list
+
     @classmethod
     def from_model(cls, experience: Experience) -> ExperienceSchema:
         return ExperienceSchema(
