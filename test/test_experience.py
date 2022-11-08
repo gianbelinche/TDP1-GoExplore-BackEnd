@@ -19,14 +19,6 @@ def clear_db():
     client.post('api/reset')
 
 
-@pytest.mark.skip(reason="Not implemented yet")
-def test_get_experience_not_exists():
-    response = client.get(URI + "/notexists")
-    data = response.json()
-    assert response.status_code == 404
-    assert data['detail'] == "Experience not found"
-
-
 def test_experience_create_succesfully():
     body = {
         'title': 'aTitle',
@@ -297,3 +289,63 @@ def test_experience_create_without_id():
     data = response.json()
     assert response.status_code == 201
     assert data["id"] != ""
+
+
+def test_get_experience_not_exists():
+    response = client.get(URI + "/notexists")
+    data = response.json()
+    assert response.status_code == 404
+    assert data['detail'] == "Experience not found"
+
+
+def test_get_experience_exists_with_given_id():
+    body = {
+        'title': 'aTitle',
+        'description': 'aDescription',
+        'images': ['image1', 'image2', 'image3'],
+        'preview_image': 'preview_image',
+        'calendar': {'start_date': '2021-01-01', 'end_date': '2021-01-05', 'quota': 10},
+        'owner': 'anOwner',
+        'id': 'anId',
+    }
+    expected_response = body.copy()
+    expected_response['calendar'] = [
+        {'date': '2021-01-01', 'quota': 10},
+        {'date': '2021-01-02', 'quota': 10},
+        {'date': '2021-01-03', 'quota': 10},
+        {'date': '2021-01-04', 'quota': 10},
+        {'date': '2021-01-05', 'quota': 10},
+    ]
+    client.post(URI, json=body)
+
+    response = client.get(URI + "/anId")
+    data = response.json()
+    assert response.status_code == 200
+    assert expected_response == data
+
+
+def test_get_experience_exists_without_given_id():
+    body = {
+        'title': 'aTitle',
+        'description': 'aDescription',
+        'images': ['image1', 'image2', 'image3'],
+        'preview_image': 'preview_image',
+        'calendar': {'start_date': '2021-01-01', 'end_date': '2021-01-05', 'quota': 10},
+        'owner': 'anOwner',
+    }
+    expected_response = body.copy()
+    expected_response['calendar'] = [
+        {'date': '2021-01-01', 'quota': 10},
+        {'date': '2021-01-02', 'quota': 10},
+        {'date': '2021-01-03', 'quota': 10},
+        {'date': '2021-01-04', 'quota': 10},
+        {'date': '2021-01-05', 'quota': 10},
+    ]
+    response = client.post(URI, json=body)
+    id = response.json()['id']
+    expected_response['id'] = id
+
+    response = client.get(URI + "/" + id)
+    data = response.json()
+    assert response.status_code == 200
+    assert expected_response == data

@@ -33,28 +33,21 @@ async def create_experience(experience_body: ExperienceCreateSchema):
         )
 
 
-#
-#
-# @router.get(
-#    '/users/{id}',
-#    status_code=status.HTTP_200_OK,
-#    response_model=UserSchema
-# )
-# async def get_user(id: str):
-#    try:
-#        repository = PersistentUserRepository()
-#        user = GetUserCommand(repository, id).execute()
-#    except UserNotFoundError as e:
-#        raise HTTPException(
-#            status_code=status.HTTP_404_NOT_FOUND,
-#            detail=str(e)
-#        )
-#    except Exception as e:
-#        logger.error(e)
-#        raise HTTPException(
-#            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#            detail="Internal Error"
-#        )
-#
-#    return user
-#
+@router.get(
+    '/experiencies/{id}',
+    status_code=status.HTTP_200_OK,
+    response_model=ExperienceSchema,
+)
+async def get_user(id: str):
+    try:
+        repository = PersistentExperienceRepository()
+        user = GetExperienceCommand(repository, id).execute()
+    except GoExploreError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Error"
+        )
+
+    return user
