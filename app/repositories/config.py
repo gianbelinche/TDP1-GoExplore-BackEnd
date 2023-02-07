@@ -1,8 +1,9 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-from app.config.constants import DB_URL, DB_NAME, ENV_NAME
+from app.config.constants import DB_URL, DB_NAME, ENV_NAME, IMAGES_PATH
 from app.config.logger import setup_logger
 from pymongo_inmemory import MongoClient as MemoryMongoClient
+import shutil
 
 logger = setup_logger(__name__)
 
@@ -27,5 +28,8 @@ db = get_database()
 
 
 def clear_db():
+    # Clear MongoDB
     for name in db.list_collection_names():
         db.drop_collection(name)
+    # Clear images DB
+    shutil.rmtree(IMAGES_PATH)
