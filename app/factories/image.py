@@ -1,10 +1,10 @@
-from app.models.experience import Experience
+from app.models.image import Image
 from app.schemas.experience import ExperienceCreateSchema
 from app.models.errors import ExperienceIncorrectCalendarError
 from datetime import timedelta, datetime
 import uuid
 
-# TODO: This class behaviour should be implemented in class Experience
+# TODO: Lo que hace esta clase es mas bien responsabilidad de la clase Experience
 
 
 class ExperienceFactory:

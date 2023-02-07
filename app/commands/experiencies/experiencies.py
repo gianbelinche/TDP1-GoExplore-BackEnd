@@ -1,5 +1,4 @@
 from app.schemas.experience import ExperienceCreateSchema, ExperienceSchema
-from app.models.experience import Experience
 from .errors import ExperienceAlreadyExistsError, ExperienceNotFoundError
 from app.repositories.experience import (
     ExperienceRepository,

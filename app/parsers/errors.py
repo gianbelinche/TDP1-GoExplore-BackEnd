@@ -1,24 +1,24 @@
 from app.utils.error import GoExploreError
 
 
-class RepositoryError(GoExploreError):
+class ParserError(GoExploreError):
     def __init__(self, message):
         super().__init__(message)
 
 
-class UserNotFoundError(RepositoryError):
+class ImageFormatError(ParserError):
     def __init__(self):
-        msg = "User not found"
+        msg = "Invalid image format"
         super().__init__(msg)
 
 
-class ExperienceNotFoundError(RepositoryError):
+class ImageSizeError(ParserError):
     def __init__(self):
-        msg = "Experience not found"
+        msg = "Image size is too large"
         super().__init__(msg)
 
 
-class ImageNotFoundError(RepositoryError):
+class ImageGroupSizeError(ParserError):
     def __init__(self):
-        msg = "Image not found"
+        msg = "Image group size is too large"
         super().__init__(msg)

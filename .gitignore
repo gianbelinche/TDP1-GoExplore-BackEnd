@@ -1,3 +1,5 @@
 pyrightconfig.json
 .env
+.python-version
+**/logs
 **/__pycache__
