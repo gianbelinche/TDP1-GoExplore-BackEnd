@@ -13,14 +13,14 @@ def get_database():
         logger.info("Memory DB initialized")
         return conn[DB_NAME]
     else:
-        conn = MongoClient(DB_URL, serverSelectionTimeoutMS=5000)
-
-        try:
-            conn.admin.command('ismaster')
-            logger.info("Connection with DB established")
-        except ConnectionFailure:
-            logger.error("Server not available")
-        return conn[DB_NAME]
+        while True:
+            try:
+                conn = MongoClient(DB_URL, serverSelectionTimeoutMS=5000)
+                conn.admin.command('ismaster')
+                logger.info("Connection with DB established")
+                return conn[DB_NAME]
+            except ConnectionFailure:
+                logger.error("DB not available, retrying...")
 
 
 db = get_database()
