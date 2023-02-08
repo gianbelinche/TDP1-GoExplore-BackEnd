@@ -1,0 +1,130 @@
+POST /users
+GET /users/{id} -> Informacion publica de usuarios (incluye tarjetas)
+POST /session -> Crea la sesion
+POST /user/{id}/card
+POST /experiences
+GET /experiences -> Busca las experiencias
+  - lat
+  - lng
+  - distance
+  - user_id
+  - category
+
+GET /experiences/{id} -> Trae la experiencia de id
+POST /images -> Sube una lista de imagenes
+GET /images/{id} -> Trae la imagen de id
+
+POST /booking -> Crea la reserva
+por ver:
+GET /bookings/mine
+GET /users/{id}/bookings
+
+
+users:
+
+{
+  id: str,
+  first_name: str,
+  last_name: str,
+  password: str,
+  email: str,
+  birthdate: str,
+  cards: List[Card]
+}
+
+user_create:
+
+{
+  first_name: str,
+  last_name: str,
+  password: str,
+  email: str,
+  birthdate: str,
+}
+
+card:
+
+{
+  number: str
+  expiry_date: str
+  security_code: str
+}
+
+card_create:
+
+{
+  number: str
+  expiry_date: str
+  security_code: str
+}
+
+session:
+200 si existe, 400 si no
+
+{
+  email: str
+  password: str
+}
+
+
+experience:
+
+{
+  id: str,
+  owner: str,
+  title: str,
+  score: float,
+  price: int,
+  location: {
+    lat: float,
+    lng: float,
+    description: str
+  },
+  category: enum(str),
+  images: List[str],
+  preview_image: str,
+  availability: Tuple[Date] (inicio, fin)
+}
+
+experience_create:
+
+{
+  owner: str,
+  title: str,
+  price: int,
+  location: {
+    lat: float,
+    lng: float,
+    description: str
+  },
+  category: enum(str),
+  images: List[str],
+  preview_image: str,
+  availability: Tuple[Date] (inicio, fin)
+}
+
+
+booking:
+
+{
+ experience_id: str,
+ reserver_id: str //El que reserva
+ date: str
+}
+
+booking_create:
+
+{
+ experience_id: str,
+ reserver_id: str //El que reserva
+ date: str
+}
+
+
+
+
+
+
+
+
+
