@@ -25,6 +25,10 @@ class UserRepository(ABC):
     def get_user_by_email(self, email: str) -> User:
         pass
 
+    @abstractmethod
+    def update_user(self, user: User) -> User:
+        pass
+
 
 class PersistentUserRepository(UserRepository):
     def __init__(self):
@@ -55,6 +59,11 @@ class PersistentUserRepository(UserRepository):
     def user_exists_by_email(self, email: str) -> bool:
         user = self.users.find_one({'email': email})
         return user is not None
+
+    def update_user(self, user: User) -> User:
+        data = self.__serialize_user(user)
+        self.users.update_one({'_id': user.id}, {'$set': data})
+        return user
 
     def __serialize_user(self, user: User) -> dict:
         serialized = {

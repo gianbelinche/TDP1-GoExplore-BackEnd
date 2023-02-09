@@ -1,5 +1,5 @@
-from app.schemas.users import UserCreateSchema, UserSchema
-from app.models.user import User
+from app.schemas.users import UserCreateSchema, UserSchema, CardCreateSchema
+from app.models.user import User, Card
 from .errors import UserAlreadyExistsError, UserNotFoundError
 from app.repositories import (
     UserRepository,
@@ -44,5 +44,36 @@ class GetUserCommand:
         if not exists:
             raise UserNotFoundError
         user = self.user_repository.get_user(self.id)
+
+        return UserSchema.from_model(user)
+
+
+class UpdateUserCommand:
+    def __init__(
+        self, user_repository: UserRepository, card: CardCreateSchema, id: str
+    ):
+        self.user_repository = user_repository
+        self.card_data = card
+        self.id = id
+
+    def execute(self) -> UserSchema:
+        user = self.user_repository.get_user(self.id)
+        cards = user.cards
+        card = Card(
+            number=self.card_data.number,
+            expiry_date=self.card_data.expiry_date,
+            security_code=self.card_data.security_code,
+        )
+        cards.append(card.to_dict())
+        user = User(
+            first_name=user.first_name,
+            last_name=user.last_name,
+            email=user.email,
+            password=user.password,
+            birth_date=user.birth_date,
+            cards=cards,
+            id=user.id,
+        )
+        user = self.user_repository.update_user(user)
 
         return UserSchema.from_model(user)

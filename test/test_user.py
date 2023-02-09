@@ -138,3 +138,106 @@ def test_user_create_user_with_extra_fields_ignores_it():
     body.pop("extra_field")
     assert response.status_code == 201
     assert data == body
+
+
+def test_user_add_card_succesfully():
+    body = {
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
+    }
+    id = client.post(URI, json=body).json()["id"]
+
+    card_body = {
+        "number": "1234-5678-9012-3456",
+        "expiry_date": "2021-01-01",
+        "security_code": "123",
+    }
+    response = client.post(URI + "/" + id + "/card", json=card_body)
+    data = response.json()
+    assert response.status_code == 201
+    assert data["cards"] == [card_body]
+
+
+def test_user_add_card_and_retreive_succesfully():
+    body = {
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
+    }
+    id = client.post(URI, json=body).json()["id"]
+
+    card_body = {
+        "number": "1234-5678-9012-3456",
+        "expiry_date": "2021-01-01",
+        "security_code": "123",
+    }
+    client.post(URI + "/" + id + "/card", json=card_body)
+    response = client.get(URI + "/" + id)
+    data = response.json()
+    assert response.status_code == 200
+    assert data["cards"] == [card_body]
+
+
+def test_user_add_two_cards_and_retreive_succesfully():
+    body = {
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
+    }
+    id = client.post(URI, json=body).json()["id"]
+
+    card_body = {
+        "number": "1234-5678-9012-3456",
+        "expiry_date": "2021-01-01",
+        "security_code": "123",
+    }
+    card_body2 = {
+        "number": "2234-5678-9012-3456",
+        "expiry_date": "2022-01-01",
+        "security_code": "122",
+    }
+    client.post(URI + "/" + id + "/card", json=card_body)
+    client.post(URI + "/" + id + "/card", json=card_body2)
+    response = client.get(URI + "/" + id)
+    data = response.json()
+    assert response.status_code == 200
+    assert data["cards"] == [card_body, card_body2]
+
+
+def test_user_add_invalid_card():
+    body = {
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
+    }
+    id = client.post(URI, json=body).json()["id"]
+
+    card_body = {
+        "number": "1234-5678-9012-3456",
+        "expiry_date": "2021-01-01",
+        "security_code": "123",
+    }
+
+    invalid_variations = {
+        "number": [None, '', 'aa'],
+        "expiry_date": [None, '', 'aa'],
+        "security_code": [None, '', 'aa'],
+    }
+
+    invalid_bodies = generate_invalid(card_body, invalid_variations)
+
+    # NOTE: If one of this tests fails, we don´t get enough information
+    # we just know that the hole suit failed.
+
+    for inv_body in invalid_bodies:
+        response = client.post(URI + "/" + id + "/card", json=inv_body)
+        assert response.status_code == 422

@@ -1,7 +1,7 @@
-POST /users
-GET /users/{id} -> Informacion publica de usuarios (incluye tarjetas)
-POST /session -> Crea la sesion
-POST /user/{id}/card
+POST /users -> Done
+GET /users/{id} -> Informacion publica de usuarios (incluye tarjetas) -> Done
+POST /session -> Crea la sesion -> Done
+POST /user/{id}/card -> Done
 POST /experiences
 GET /experiences -> Busca las experiencias
   - lat

@@ -2,8 +2,8 @@ from fastapi.exceptions import HTTPException
 from app.repositories.users import PersistentUserRepository
 from fastapi import status, APIRouter
 from app.config.logger import setup_logger
-from app.schemas.users import UserCreateSchema, UserSchema
-from app.commands.users import CreateUserCommand, GetUserCommand
+from app.schemas.users import UserCreateSchema, UserSchema, CardCreateSchema
+from app.commands.users import CreateUserCommand, GetUserCommand, UpdateUserCommand
 from app.utils.error import GoExploreError
 
 
@@ -39,4 +39,21 @@ async def get_user(id: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Error"
         )
 
+    return user
+
+
+@router.post(
+    '/users/{id}/card', status_code=status.HTTP_201_CREATED, response_model=UserSchema
+)
+async def add_card(id: str, card_body: CardCreateSchema):
+    try:
+        repository = PersistentUserRepository()
+        user = UpdateUserCommand(repository, card_body, id).execute()
+    except GoExploreError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Error"
+        )
     return user
