@@ -21,6 +21,10 @@ class UserRepository(ABC):
     def user_exists_by_email(self, email: str) -> bool:
         pass
 
+    @abstractmethod
+    def get_user_by_email(self, email: str) -> User:
+        pass
+
 
 class PersistentUserRepository(UserRepository):
     def __init__(self):
@@ -34,6 +38,12 @@ class PersistentUserRepository(UserRepository):
 
     def get_user(self, id: str) -> User:
         user = self.users.find_one({'_id': id})
+        if user is None:
+            raise UserNotFoundError
+        return self.__deserialize_user(user)
+
+    def get_user_by_email(self, email: str) -> User:
+        user = self.users.find_one({'email': email})
         if user is None:
             raise UserNotFoundError
         return self.__deserialize_user(user)
