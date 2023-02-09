@@ -28,24 +28,28 @@ def test_get_user_not_exists():
 
 def test_user_create_succesfully():
     body = {
-        'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
     }
     response = client.post(URI, json=body)
 
     data = response.json()
+    body["id"] = data["id"]
+    body["cards"] = []
     assert response.status_code == 201
     assert body == data
 
 
 def test_user_create_existing_user_fails():
     body = {
-        'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
     }
     # Created first time
     client.post(URI, json=body)
@@ -59,16 +63,18 @@ def test_user_create_existing_user_fails():
 
 def test_user_create_wrong_body():
     body = {
-        'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
     }
     invalid_variations = {
-        'id': [None, ''],
         'first_name': [None, '', 'aa'],
         'last_name': [None, '', 'aa'],
         'email': [None, '', 'email', 'a', 'email.com'],
+        'password': [None, '', 'a', 'aa'],
+        'birth_date': [None, '', 'a', 'aa'],
     }
 
     invalid_bodies = generate_invalid(body, invalid_variations)
@@ -82,14 +88,53 @@ def test_user_create_wrong_body():
 
 
 def test_user_create_and_retrieve_successfully():
-    uid = 'anId'
     body = {
-        'id': 'anId',
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'password': "1234",
+        "birth_date": "1990-01-01",
     }
-    client.post(URI, json=body)
-    response = client.get(URI + f"/{uid}")
+    id = client.post(URI, json=body).json()["id"]
+    response = client.get(URI + f"/{id}")
     data = response.json()
+    body["id"] = id
+    body["cards"] = []
     assert body == data
+
+
+def test_user_create_existing_user_with_other_fields_different_fails():
+    body = {
+        'first_name': 'another_first_name',
+        'last_name': 'another_last_name',
+        'email': 'email@mail.com',
+        'password': "another_1234",
+        "birth_date": "1991-01-01",
+    }
+    # Created first time
+    client.post(URI, json=body)
+    # Try to create again
+    response = client.post(URI, json=body)
+
+    data = response.json()
+    assert response.status_code == 400
+    assert data['detail'] == "User already exists"
+
+
+def test_user_create_user_with_extra_fields_ignores_it():
+    body = {
+        'first_name': 'another_first_name',
+        'last_name': 'another_last_name',
+        'email': 'email@mail.com',
+        'password': "another_1234",
+        "birth_date": "1991-01-01",
+        "extra_field": "extra_field",
+    }
+    # Created first time
+    response = client.post(URI, json=body)
+    data = response.json()
+    body["id"] = data["id"]
+    body["cards"] = []
+    body.pop("extra_field")
+    assert response.status_code == 201
+    assert data == body

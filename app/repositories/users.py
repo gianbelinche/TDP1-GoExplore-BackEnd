@@ -17,6 +17,10 @@ class UserRepository(ABC):
     def user_exists(self, id: str) -> bool:
         pass
 
+    @abstractmethod
+    def user_exists_by_email(self, email: str) -> bool:
+        pass
+
 
 class PersistentUserRepository(UserRepository):
     def __init__(self):
@@ -38,24 +42,31 @@ class PersistentUserRepository(UserRepository):
         user = self.users.find_one({'_id': id})
         return user is not None
 
+    def user_exists_by_email(self, email: str) -> bool:
+        user = self.users.find_one({'email': email})
+        return user is not None
+
     def __serialize_user(self, user: User) -> dict:
         serialized = {
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
-            '_id': user.id
+            '_id': user.id,
+            'password': user.password,
+            'birth_date': user.birth_date,
+            'cards': user.cards,
         }
 
         return serialized
 
-    def __deserialize_user(
-        self,
-        data: dict
-    ) -> User:
+    def __deserialize_user(self, data: dict) -> User:
 
         return User(
             id=data['_id'],
             first_name=data['first_name'],
             last_name=data['last_name'],
-            email=data['email']
+            email=data['email'],
+            password=data['password'],
+            birth_date=data['birth_date'],
+            cards=data['cards'],
         )
