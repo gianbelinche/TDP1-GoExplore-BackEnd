@@ -1,14 +1,11 @@
 from fastapi.exceptions import HTTPException
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import Response
 from fastapi import APIRouter, Header, UploadFile, status
 from typing import List
-import os
-from random import randint
-from app.parsers.errors import ParserError
 
 from app.parsers.image_parser import ImageParser
 from app.config.logger import setup_logger
-from app.repositories.images import ImageRepository, PersistentImageRepository
+from app.repositories.images import PersistentImageRepository
 from app.schemas.image import ImageSchema
 from app.utils.error import GoExploreError
 

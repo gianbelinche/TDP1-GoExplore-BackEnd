@@ -1,7 +1,8 @@
 from app.repositories.config import db
 from abc import ABC, abstractmethod
-from app.models.experience import Experience
+from app.models.experience import Category, Experience, Location
 from app.repositories.errors import ExperienceNotFoundError
+from datetime import date
 
 
 class ExperienceRepository(ABC):
@@ -39,12 +40,21 @@ class PersistentExperienceRepository(ExperienceRepository):
         return experience is not None
 
     def __serialize_experience(self, experience: Experience) -> dict:
+        availability = list(map(lambda d: str(d), experience.availability))
+
         serialized = {
             'title': experience.title,
             'description': experience.description,
+            'price': experience.price,
+            'location': {
+                'description': experience.location.description,
+                'lat': experience.location.lat,
+                'lng': experience.location.lng,
+            },
+            'category': experience.category.value,
             'images': experience.images,
             'preview_image': experience.preview_image,
-            'calendar': experience.calendar,
+            'availability': availability,
             'owner': experience.owner,
             '_id': experience.id,
         }
@@ -53,12 +63,24 @@ class PersistentExperienceRepository(ExperienceRepository):
 
     def __deserialize_experience(self, data: dict) -> Experience:
 
+        availability = [
+            date.fromisoformat(data['availability'][0]),
+            date.fromisoformat(data['availability'][1]),
+        ]
+
         return Experience(
             id=data['_id'],
             title=data['title'],
             description=data['description'],
+            price=data['price'],
+            location=Location(
+                description=data['location']['description'],
+                lat=data['location']['lat'],
+                lng=data['location']['lng'],
+            ),
+            category=Category(data['category']),
             images=data['images'],
             preview_image=data['preview_image'],
-            calendar=data['calendar'],
+            availability=availability,
             owner=data['owner'],
         )
