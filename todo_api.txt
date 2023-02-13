@@ -14,11 +14,12 @@ GET /experiences/{id} -> Trae la experiencia de id
 POST /images -> Sube una lista de imagenes
 GET /images/{id} -> Trae la imagen de id
 
-POST /booking -> Crea la reserva
+POST /bookings -> Crea la reserva
 por ver:
 GET /bookings/mine
 GET /users/{id}/bookings
 
+POST /users/{id}/fav -> Agrega una experiencia a favoritos
 
 users:
 
@@ -29,7 +30,8 @@ users:
   password: str,
   email: str,
   birthdate: str,
-  cards: List[Card]
+  cards: List[Card],
+  fav: List[Experience id]
 }
 
 user_create:
@@ -110,6 +112,7 @@ booking:
  experience_id: str,
  reserver_id: str //El que reserva
  date: str
+ owner_id: str //El que ofrece
 }
 
 booking_create:
@@ -118,8 +121,14 @@ booking_create:
  experience_id: str,
  reserver_id: str //El que reserva
  date: str
+ owner_id: str //El que ofrece
 }
 
+fav_create:
+
+{
+  experience_id: str
+}
 
 
 
