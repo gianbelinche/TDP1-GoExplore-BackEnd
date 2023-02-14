@@ -8,7 +8,7 @@ client = TestClient(app)
 
 URI = 'api/bookings'
 USERS_URI = 'api/users'
-EXPERIENCIES_URI = 'api/experiencies'
+EXPERIENCIES_URI = 'api/experiences'
 RESERVED_URI = "bookings_reserved"
 RECEIVED_URI = "bookings_received"
 
