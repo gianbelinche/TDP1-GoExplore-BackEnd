@@ -1,8 +1,14 @@
+from typing import List
 from app.models.experience import Experience, Location
-from app.schemas.experience import ExperienceCreateSchema, ExperienceSchema
+from app.schemas.experience import (
+    ExperienceCreateSchema,
+    ExperienceSchema,
+    SearchExperience,
+)
 from .errors import ExperienceAlreadyExistsError, ExperienceNotFoundError
 from app.repositories.experience import (
     ExperienceRepository,
+    Search,
 )
 from app.config.logger import setup_logger
 
@@ -29,6 +35,7 @@ class CreateExperienceCommand:
             title=self.exp_data.title,
             description=self.exp_data.description,
             price=self.exp_data.price,
+            score=self.exp_data.score,
             location=location,
             category=self.exp_data.category,
             images=self.exp_data.images,
@@ -57,3 +64,17 @@ class GetExperienceCommand:
         experience = self.experience_repository.get_experience(self.id)
 
         return ExperienceSchema.from_model(experience)
+
+
+class SearchExperiencesCommand:
+    def __init__(
+        self,
+        experience_repository: ExperienceRepository,
+        search: Search,
+    ):
+        self.experience_repository = experience_repository
+        self.search = search
+
+    def execute(self) -> List[ExperienceSchema]:
+        experiences = self.experience_repository.search_experiences(self.search)
+        return list(map(ExperienceSchema.from_model, experiences))

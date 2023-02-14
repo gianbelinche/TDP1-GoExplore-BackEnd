@@ -7,7 +7,7 @@ from test.utils import generate_invalid
 
 client = TestClient(app)
 
-URI = 'api/experiencies'
+URI = 'api/experiences'
 
 
 @pytest.fixture(autouse=True)
@@ -133,6 +133,7 @@ def test_get_experience_exists():
     id = response.json()['id']
     expected_response = body.copy()
     expected_response['id'] = id
+    expected_response['score'] = 0.0
 
     response = client.get(f"{URI}/{id}")
     data = response.json()

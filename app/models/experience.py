@@ -27,6 +27,7 @@ class Experience:
         title: str,
         description: str,
         price: int,
+        score: float,
         location: Location,
         category: Category,
         images: list[str],
@@ -38,6 +39,7 @@ class Experience:
         self.title = title
         self.description = description
         self.price = price
+        self.score = score
         self.location = location
         self.category = category
         self.images = images
@@ -54,6 +56,7 @@ class Experience:
         title: str,
         description: str,
         price: int,
+        score: float,
         location: Location,
         category: Category,
         images: list[str],
@@ -67,6 +70,7 @@ class Experience:
             title=title,
             description=description,
             price=price,
+            score=score,
             location=location,
             category=category,
             images=images,

@@ -1,8 +1,30 @@
+from typing import List, Optional
 from app.repositories.config import db
 from abc import ABC, abstractmethod
 from app.models.experience import Category, Experience, Location
 from app.repositories.errors import ExperienceNotFoundError
 from datetime import date
+
+
+class SearchLocation:
+    def __init__(self, lat: float, lng: float, dist: int):
+        self.lat = lat
+        self.lng = lng
+        self.dist = dist
+
+
+class Search:
+    def __init__(
+        self,
+        owner: Optional[str],
+        category: Optional[Category],
+        location: Optional[SearchLocation],
+        limit: int,
+    ):
+        self.owner = owner
+        self.category = category
+        self.location = location
+        self.limit = limit
 
 
 class ExperienceRepository(ABC):
@@ -16,6 +38,10 @@ class ExperienceRepository(ABC):
 
     @abstractmethod
     def experience_exists(self, id: str) -> bool:
+        pass
+
+    @abstractmethod
+    def search_experiences(self, search: Search) -> List[Experience]:
         pass
 
 
@@ -39,6 +65,21 @@ class PersistentExperienceRepository(ExperienceRepository):
         experience = self.experiencies.find_one({'_id': id})
         return experience is not None
 
+    def search_experiences(self, search: Search) -> List[Experience]:
+
+        serialized_search = self.__serialize_search(search)
+        experiences = self.experiencies.find(serialized_search).limit(search.limit)
+        return list(map(self.__deserialize_experience, experiences))
+
+    def __serialize_search(self, search: Search) -> dict:
+        # TODO: location is not being queried
+        srch = {
+            'owner': search.owner,
+            'category': search.category and search.category.value,
+        }
+
+        return {k: v for k, v in srch.items() if v is not None}
+
     def __serialize_experience(self, experience: Experience) -> dict:
         availability = list(map(lambda d: str(d), experience.availability))
 
@@ -46,6 +87,7 @@ class PersistentExperienceRepository(ExperienceRepository):
             'title': experience.title,
             'description': experience.description,
             'price': experience.price,
+            'score': experience.score,
             'location': {
                 'description': experience.location.description,
                 'lat': experience.location.lat,
@@ -73,6 +115,7 @@ class PersistentExperienceRepository(ExperienceRepository):
             title=data['title'],
             description=data['description'],
             price=data['price'],
+            score=data['score'],
             location=Location(
                 description=data['location']['description'],
                 lat=data['location']['lat'],
