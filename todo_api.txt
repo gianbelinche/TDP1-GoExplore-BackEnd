@@ -16,8 +16,8 @@ GET /images/{id} -> Trae la imagen de id
 
 POST /bookings -> Crea la reserva
 por ver:
-GET /bookings/mine
-GET /users/{id}/bookings
+GET /users/{id}/bookings_received -> Trae las reservas que recibio un usuario
+GET /users/{id}/bookings_reserved -> Trae las reservas que hizo un usuario
 
 POST /users/{id}/fav -> Agrega una experiencia a favoritos
 
