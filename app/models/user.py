@@ -1,3 +1,13 @@
+from typing import List
+
+
+class Card:
+    def __init__(self, number: str, expiry_date: str, security_code: str):
+        self.number = number
+        self.expiry_date = expiry_date
+        self.security_code = security_code
+
+
 class User:
     def __init__(
         self,
@@ -7,7 +17,8 @@ class User:
         id: str,
         password: str,
         birth_date: str,
-        cards: list,
+        cards: List[Card],
+        favourites: List[str],
     ):
         self.first_name = first_name
         self.last_name = last_name
@@ -16,17 +27,4 @@ class User:
         self.password = password
         self.birth_date = birth_date
         self.cards = cards
-
-
-class Card:
-    def __init__(self, number: str, expiry_date: str, security_code: str):
-        self.number = number
-        self.expiry_date = expiry_date
-        self.security_code = security_code
-
-    def to_dict(self) -> dict:
-        return {
-            "number": self.number,
-            "security_code": self.security_code,
-            "expiry_date": self.expiry_date,
-        }
+        self.favourites = favourites

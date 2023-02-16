@@ -6,6 +6,7 @@ from app.controllers.experiencies import router as experiencies_router
 from app.controllers.images import router as images_router
 from app.controllers.sessions import router as sessions_router
 from app.controllers.bookings import router as bookings_router
+from app.controllers.favourites import router as favourites_router
 from app.config.constants import PORT
 from app.utils.config import log_config
 
@@ -35,6 +36,7 @@ app.include_router(experiencies_router, prefix="/api")
 app.include_router(images_router, prefix="/api")
 app.include_router(sessions_router, prefix="/api")
 app.include_router(bookings_router, prefix="/api")
+app.include_router(favourites_router, prefix="/api")
 
 logger.info(f"Server started on port: {PORT}")
 log_config()

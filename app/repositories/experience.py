@@ -44,6 +44,10 @@ class ExperienceRepository(ABC):
     def search_experiences(self, search: Search) -> List[Experience]:
         pass
 
+    @abstractmethod
+    def get_experiences_by_id(self, ids: List[str]) -> List[Experience]:
+        pass
+
 
 class PersistentExperienceRepository(ExperienceRepository):
     def __init__(self):
@@ -69,6 +73,10 @@ class PersistentExperienceRepository(ExperienceRepository):
 
         serialized_search = self.__serialize_search(search)
         experiences = self.experiencies.find(serialized_search).limit(search.limit)
+        return list(map(self.__deserialize_experience, experiences))
+
+    def get_experiences_by_id(self, ids: List[str]) -> List[Experience]:
+        experiences = self.experiencies.find({'_id': {'$in': ids}})
         return list(map(self.__deserialize_experience, experiences))
 
     def __serialize_search(self, search: Search) -> dict:

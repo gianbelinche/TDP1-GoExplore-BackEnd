@@ -20,6 +20,7 @@ GET /users/{id}/bookings_received -> Trae las reservas que recibio un usuario
 GET /users/{id}/bookings_reserved -> Trae las reservas que hizo un usuario
 
 POST /users/{id}/fav -> Agrega una experiencia a favoritos
+GET /users/{id}/fav -> Devuelve un listado de las experiencias favoritas del usuario -> List[Experience]
 
 users:
 

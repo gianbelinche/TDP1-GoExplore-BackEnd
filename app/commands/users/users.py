@@ -23,6 +23,7 @@ class CreateUserCommand:
             password=self.user_data.password,
             birth_date=self.user_data.birth_date,
             cards=[],
+            favourites=[],
             id=str(uuid.uuid4()),
         )
         already_exists = self.user_repository.user_exists_by_email(user.email)
@@ -59,12 +60,13 @@ class UpdateUserCommand:
     def execute(self) -> UserSchema:
         user = self.user_repository.get_user(self.id)
         cards = user.cards
-        card = Card(
-            number=self.card_data.number,
-            expiry_date=self.card_data.expiry_date,
-            security_code=self.card_data.security_code,
+        cards.append(
+            Card(
+                number=self.card_data.number,
+                expiry_date=self.card_data.expiry_date,
+                security_code=self.card_data.security_code,
+            )
         )
-        cards.append(card.to_dict())
         user = User(
             first_name=user.first_name,
             last_name=user.last_name,
@@ -72,6 +74,7 @@ class UpdateUserCommand:
             password=user.password,
             birth_date=user.birth_date,
             cards=cards,
+            favourites=user.favourites,
             id=user.id,
         )
         user = self.user_repository.update_user(user)

@@ -1,6 +1,7 @@
+from app.models.favourite import Favourite
 from app.repositories.config import db
 from abc import ABC, abstractmethod
-from app.models.user import User
+from app.models.user import Card, User
 from app.repositories.errors import UserNotFoundError
 
 
@@ -27,6 +28,10 @@ class UserRepository(ABC):
 
     @abstractmethod
     def update_user(self, user: User) -> User:
+        pass
+
+    @abstractmethod
+    def add_favourite(self, favourite: Favourite) -> Favourite:
         pass
 
 
@@ -65,20 +70,47 @@ class PersistentUserRepository(UserRepository):
         self.users.update_one({'_id': user.id}, {'$set': data})
         return user
 
+    def add_favourite(self, favourite: Favourite) -> Favourite:
+        user_id = favourite.user_id
+        experience_id = favourite.experience_id
+        self.users.update_one(
+            {'_id': user_id}, {'$addToSet': {'favourites': experience_id}}
+        )
+
+        return favourite
+
     def __serialize_user(self, user: User) -> dict:
+        def __serialize_card(card: Card) -> dict:
+            return {
+                "number": card.number,
+                "security_code": card.security_code,
+                "expiry_date": card.expiry_date,
+            }
+
+        cards = list(map(__serialize_card, user.cards))
+
         serialized = {
+            '_id': user.id,
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
-            '_id': user.id,
             'password': user.password,
             'birth_date': user.birth_date,
-            'cards': user.cards,
+            'cards': cards,
+            'favourites': user.favourites,
         }
 
         return serialized
 
     def __deserialize_user(self, data: dict) -> User:
+        def __deserialize_card(card: dict) -> Card:
+            return Card(
+                number=card['number'],
+                security_code=card['security_code'],
+                expiry_date=card['expiry_date'],
+            )
+
+        cards = list(map(__deserialize_card, data['cards']))
 
         return User(
             id=data['_id'],
@@ -87,5 +119,6 @@ class PersistentUserRepository(UserRepository):
             email=data['email'],
             password=data['password'],
             birth_date=data['birth_date'],
-            cards=data['cards'],
+            cards=cards,
+            favourites=data['favourites'],
         )
