@@ -1,9 +1,15 @@
 from typing import List, Optional
+from app.config.logger import setup_logger
 from app.repositories.config import db
+from pymongo import GEOSPHERE
+from bson.son import SON
 from abc import ABC, abstractmethod
 from app.models.experience import Category, Experience, Location
 from app.repositories.errors import ExperienceNotFoundError
 from datetime import date
+
+
+EARTH_RADIUS_METERS = 6_371_000
 
 
 class SearchLocation:
@@ -51,40 +57,51 @@ class ExperienceRepository(ABC):
 
 class PersistentExperienceRepository(ExperienceRepository):
     def __init__(self):
-        COLLECTION_NAME = "Experiencies"
-        self.experiencies = db[COLLECTION_NAME]
+        COLLECTION_NAME = "Experiences"
+        self.experiences = db[COLLECTION_NAME]
+        self.experiences.create_index([("location", GEOSPHERE)])
 
     def add_experience(self, experience: Experience) -> Experience:
         data = self.__serialize_experience(experience)
-        self.experiencies.insert_one(data)
+        self.experiences.insert_one(data)
         return experience
 
     def get_experience(self, id: str) -> Experience:
-        experience = self.experiencies.find_one({'_id': id})
+        experience = self.experiences.find_one({'_id': id})
         if experience is None:
             raise ExperienceNotFoundError
         return self.__deserialize_experience(experience)
 
     def experience_exists(self, id: str) -> bool:
-        experience = self.experiencies.find_one({'_id': id})
+        experience = self.experiences.find_one({'_id': id})
         return experience is not None
 
     def search_experiences(self, search: Search) -> List[Experience]:
 
         serialized_search = self.__serialize_search(search)
-        experiences = self.experiencies.find(serialized_search).limit(search.limit)
+        experiences = self.experiences.find(serialized_search).limit(search.limit)
         return list(map(self.__deserialize_experience, experiences))
 
     def get_experiences_by_id(self, ids: List[str]) -> List[Experience]:
-        experiences = self.experiencies.find({'_id': {'$in': ids}})
+        experiences = self.experiences.find({'_id': {'$in': ids}})
         return list(map(self.__deserialize_experience, experiences))
 
     def __serialize_search(self, search: Search) -> dict:
-        # TODO: location is not being queried
         srch = {
             'owner': search.owner,
             'category': search.category and search.category.value,
         }
+
+        if search.location:
+            lng = search.location.lng
+            lat = search.location.lat
+            dist = search.location.dist
+            srch['location'] = SON(
+                [
+                    ("$nearSphere", [lng, lat]),
+                    ("$maxDistance", dist / EARTH_RADIUS_METERS),
+                ]
+            )
 
         return {k: v for k, v in srch.items() if v is not None}
 
@@ -98,8 +115,8 @@ class PersistentExperienceRepository(ExperienceRepository):
             'score': experience.score,
             'location': {
                 'description': experience.location.description,
-                'lat': experience.location.lat,
-                'lng': experience.location.lng,
+                'type': 'Point',
+                'coordinates': [experience.location.lng, experience.location.lat],
             },
             'category': experience.category.value,
             'images': experience.images,
@@ -126,8 +143,8 @@ class PersistentExperienceRepository(ExperienceRepository):
             score=data['score'],
             location=Location(
                 description=data['location']['description'],
-                lat=data['location']['lat'],
-                lng=data['location']['lng'],
+                lat=data['location']['coordinates'][1],
+                lng=data['location']['coordinates'][0],
             ),
             category=Category(data['category']),
             images=data['images'],

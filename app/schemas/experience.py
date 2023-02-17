@@ -8,7 +8,7 @@ from app.models.experience import Experience, Category
 class SearchExperience(BaseModel):
     lat: Optional[float]
     lng: Optional[float]
-    dist: int = Field(default=10000)
+    dist: int = Field(default=50)
     owner: Optional[str]
     category: Optional[Category]
     limit: int = Field(default=5)
