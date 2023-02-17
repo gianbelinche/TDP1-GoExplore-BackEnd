@@ -41,9 +41,12 @@ def test_post_session_correct_pass_succesfully():
         "password": "1234",
         "birth_date": "1990-01-01",
     }
-    client.post('api/users', json=body_user)
+    user = client.post('api/users', json=body_user).json()
     response = client.post(URI, json=body_session)
+    data = response.json()
+
     assert response.status_code == 200
+    assert data['id'] == user['id']
 
 
 def test_post_session_invalid_password_fails():

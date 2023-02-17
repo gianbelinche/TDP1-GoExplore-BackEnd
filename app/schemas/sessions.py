@@ -1,6 +1,8 @@
 from __future__ import annotations
 from pydantic import BaseModel, Field, EmailStr
 
+from app.models.user import User
+
 
 class SessionSchemaBase(BaseModel):
     pass
@@ -12,8 +14,8 @@ class SessionCreateSchema(SessionSchemaBase):
 
 
 class SessionSchema(SessionSchemaBase):
-    session: bool
+    id: str
 
     @classmethod
-    def from_model(cls) -> SessionSchema:
-        return SessionSchema(session=True)
+    def from_model(cls, user: User) -> SessionSchema:
+        return SessionSchema(id=user.id)

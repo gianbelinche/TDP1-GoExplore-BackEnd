@@ -1,3 +1,4 @@
+from app.models.user import User
 from app.schemas.sessions import SessionCreateSchema, SessionSchema
 from .errors import UserNotFoundError, IncorrectPasswordError
 from app.repositories import (
@@ -14,13 +15,12 @@ class CreateSessionCommand:
         self.session_data = session
 
     def execute(self) -> SessionSchema:
-        already_exists = self.user_repository.user_exists_by_email(
-            self.session_data.email
-        )
-        if not already_exists:
+        user: User
+        try:
+            user = self.user_repository.get_user_by_email(self.session_data.email)
+        except Exception:
             raise UserNotFoundError
-        user = self.user_repository.get_user_by_email(self.session_data.email)
+
         if user.password != self.session_data.password:
             raise IncorrectPasswordError
-
-        return SessionSchema.from_model()
+        return SessionSchema.from_model(user)
