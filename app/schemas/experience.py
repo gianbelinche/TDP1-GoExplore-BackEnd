@@ -1,5 +1,5 @@
 from __future__ import annotations
-from pydantic import BaseModel, Field, ValidationError, root_validator
+from pydantic import BaseModel, Field
 from datetime import date
 from typing import List, Optional
 from app.models.experience import Experience, Category
@@ -8,7 +8,7 @@ from app.models.experience import Experience, Category
 class SearchExperience(BaseModel):
     lat: Optional[float]
     lng: Optional[float]
-    dist: int = Field(default=50)
+    dist: int = Field(default=5_000)
     owner: Optional[str]
     category: Optional[Category]
     limit: int = Field(default=5)
