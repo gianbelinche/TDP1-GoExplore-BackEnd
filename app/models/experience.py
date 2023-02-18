@@ -12,13 +12,13 @@ class Location:
 
 
 class Category(Enum):
-    WalkAndRide = "Paseo"
-    Gastronomy = "Gastronomía"
-    WellBeing = "Bienestar"
-    ArtAndCulture = "Arte y Cultura"
-    Sports = "Deportes"
-    Entertainment = "Entretenimiento"
-    OpenAir = "Aire Libre"
+    WalkAndRide = "Ride"
+    Gastronomy = "Food"
+    WellBeing = "Well-being"
+    ArtAndCulture = "Art and Culture"
+    Sports = "Sports"
+    Entertainment = "Entertainment"
+    OpenAir = "Outdoor"
 
 
 class Experience:

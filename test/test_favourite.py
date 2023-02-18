@@ -33,7 +33,7 @@ def create_experience():
             'lat': 23.4,
             'lng': 32.23,
         },
-        'category': 'Gastronomía',
+        'category': 'Food',
         'images': ['image1', 'image2', 'image3'],
         'preview_image': 'preview_image',
         'availability': ['2022-12-13', '2023-12-18'],

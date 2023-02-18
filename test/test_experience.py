@@ -20,7 +20,7 @@ def create_experience(fields={}):
             'lat': 23.4,
             'lng': 32.23,
         },
-        'category': 'Gastronomía',
+        'category': 'Food',
         'images': ['image1', 'image2', 'image3'],
         'preview_image': 'preview_image',
         'availability': ['2022-12-13', '2023-12-18'],
@@ -62,7 +62,7 @@ def test_experience_create_with_wrong_body():
             'lat': 23.4,
             'lng': 32.23,
         },
-        'category': 'Gastronomía',
+        'category': 'Food',
         'images': ['image1', 'image2', 'image3'],
         'preview_image': 'preview_image',
         'availability': ['2022-12-13', '2023-12-18'],
@@ -138,12 +138,12 @@ def test_get_experience_exists():
 
 
 def test_search_experience_by_category():
-    exp1 = create_experience({"title": "experience 1", "category": "Paseo"})
-    exp2 = create_experience({"title": "experience 2", "category": "Gastronomía"})
-    exp3 = create_experience({"title": "experience 3", "category": "Paseo"})
-    exp4 = create_experience({"title": "experience 4", "category": "Aire Libre"})
+    exp1 = create_experience({"title": "experience 1", "category": "Ride"})
+    exp2 = create_experience({"title": "experience 2", "category": "Food"})
+    exp3 = create_experience({"title": "experience 3", "category": "Ride"})
+    exp4 = create_experience({"title": "experience 4", "category": "Outdoor"})
 
-    response = client.get(f"{URI}?category=Paseo")
+    response = client.get(f"{URI}?category=Ride")
     data = response.json()
 
     data_titles = map(lambda e: e['title'], data)
@@ -207,16 +207,16 @@ def test_search_experience_by_location():
 
 def test_search_experience_without_filters_returns_everything():
     exp1 = create_experience(
-        {"title": "experience 1", "owner": "omar", "category": "Paseo"}
+        {"title": "experience 1", "owner": "omar", "category": "Ride"}
     )
     exp2 = create_experience(
-        {"title": "experience 2", "owner": "juan", "category": "Gastronomía"}
+        {"title": "experience 2", "owner": "juan", "category": "Food"}
     )
     exp3 = create_experience(
-        {"title": "experience 3", "owner": "Gastronomía", "category": "Paseo"}
+        {"title": "experience 3", "owner": "Food", "category": "Ride"}
     )
     exp4 = create_experience(
-        {"title": "experience 4", "owner": "omar", "category": "Aire Libre"}
+        {"title": "experience 4", "owner": "omar", "category": "Outdoor"}
     )
 
     response = client.get(f"{URI}")
@@ -230,19 +230,19 @@ def test_search_experience_without_filters_returns_everything():
 
 def test_search_experience_with_multiple_filters():
     exp1 = create_experience(
-        {"title": "experience 1", "owner": "omar", "category": "Paseo"}
+        {"title": "experience 1", "owner": "omar", "category": "Ride"}
     )
     exp2 = create_experience(
-        {"title": "experience 2", "owner": "juan", "category": "Gastronomía"}
+        {"title": "experience 2", "owner": "juan", "category": "Food"}
     )
     exp3 = create_experience(
-        {"title": "experience 3", "owner": "Gastronomía", "category": "Paseo"}
+        {"title": "experience 3", "owner": "Food", "category": "Ride"}
     )
     exp4 = create_experience(
-        {"title": "experience 4", "owner": "omar", "category": "Aire Libre"}
+        {"title": "experience 4", "owner": "omar", "category": "Outdoor"}
     )
 
-    response = client.get(f"{URI}?category=Paseo&owner=omar")
+    response = client.get(f"{URI}?category=Ride&owner=omar")
     data = response.json()
 
     data_titles = map(lambda e: e['title'], data)
@@ -253,15 +253,15 @@ def test_search_experience_with_multiple_filters():
 
 
 def test_search_experience_with_limit_returns_given_amount():
-    create_experience({"title": "experience 1", "owner": "omar", "category": "Paseo"})
+    create_experience({"title": "experience 1", "owner": "omar", "category": "Ride"})
     create_experience(
-        {"title": "experience 2", "owner": "juan", "category": "Gastronomía"}
+        {"title": "experience 2", "owner": "juan", "category": "Food"}
     )
     create_experience(
-        {"title": "experience 3", "owner": "Gastronomía", "category": "Paseo"}
+        {"title": "experience 3", "owner": "Food", "category": "Ride"}
     )
     create_experience(
-        {"title": "experience 4", "owner": "omar", "category": "Aire Libre"}
+        {"title": "experience 4", "owner": "omar", "category": "Outdoor"}
     )
 
     response = client.get(f"{URI}?limit=3")
