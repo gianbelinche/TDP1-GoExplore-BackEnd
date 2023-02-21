@@ -141,7 +141,7 @@ def test_search_experience_by_category():
     exp1 = create_experience({"title": "experience 1", "category": "Ride"})
     exp2 = create_experience({"title": "experience 2", "category": "Food"})
     exp3 = create_experience({"title": "experience 3", "category": "Ride"})
-    exp4 = create_experience({"title": "experience 4", "category": "Outdoor"})
+    exp4 = create_experience({"title": "experience 4", "category": "Outdoors"})
 
     response = client.get(f"{URI}?category=Ride")
     data = response.json()
@@ -216,7 +216,7 @@ def test_search_experience_without_filters_returns_everything():
         {"title": "experience 3", "owner": "Food", "category": "Ride"}
     )
     exp4 = create_experience(
-        {"title": "experience 4", "owner": "omar", "category": "Outdoor"}
+        {"title": "experience 4", "owner": "omar", "category": "Outdoors"}
     )
 
     response = client.get(f"{URI}")
@@ -239,7 +239,7 @@ def test_search_experience_with_multiple_filters():
         {"title": "experience 3", "owner": "Food", "category": "Ride"}
     )
     exp4 = create_experience(
-        {"title": "experience 4", "owner": "omar", "category": "Outdoor"}
+        {"title": "experience 4", "owner": "omar", "category": "Outdoors"}
     )
 
     response = client.get(f"{URI}?category=Ride&owner=omar")
@@ -261,7 +261,7 @@ def test_search_experience_with_limit_returns_given_amount():
         {"title": "experience 3", "owner": "Food", "category": "Ride"}
     )
     create_experience(
-        {"title": "experience 4", "owner": "omar", "category": "Outdoor"}
+        {"title": "experience 4", "owner": "omar", "category": "Outdoors"}
     )
 
     response = client.get(f"{URI}?limit=3")
