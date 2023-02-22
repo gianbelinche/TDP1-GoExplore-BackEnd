@@ -96,6 +96,7 @@ class PersistentUserRepository(UserRepository):
             'email': user.email,
             'password': user.password,
             'birth_date': user.birth_date,
+            'host': user.host,
             'cards': cards,
             'favourites': user.favourites,
         }
@@ -119,6 +120,7 @@ class PersistentUserRepository(UserRepository):
             email=data['email'],
             password=data['password'],
             birth_date=data['birth_date'],
+            host=data['host'],
             cards=cards,
             favourites=data['favourites'],
         )

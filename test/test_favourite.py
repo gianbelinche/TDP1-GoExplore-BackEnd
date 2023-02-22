@@ -17,6 +17,7 @@ def create_user():
         'last_name': 'last_name',
         'email': 'email@mail.com',
         'password': "1234",
+        'host': False,
         "birth_date": "1990-01-01",
     }
     response = client.post("api/users", json=body)

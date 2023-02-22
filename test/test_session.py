@@ -9,6 +9,22 @@ client = TestClient(app)
 URI = 'api/session'
 
 
+def create_user(fields={}):
+    body = {
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'email': 'email@mail.com',
+        'password': "1234",
+        'host': False,
+        "birth_date": "1990-01-01",
+    }
+
+    for k, v in fields.items():
+        body[k] = v
+    response = client.post("api/users", json=body)
+    return response.json()
+
+
 @pytest.fixture(autouse=True)
 def clear_db():
     # This runs before each test
@@ -30,18 +46,15 @@ def test_post_session_incorrect_fails():
 
 
 def test_post_session_correct_pass_succesfully():
+    user_email = 'user@email.com'
+    user_password = '1234pass'
+    user = create_user({'email': user_email, 'password': user_password})
+
     body_session = {
-        'email': 'email@mail.com',
-        'password': "1234",
+        'email': user_email,
+        'password': user_password,
     }
-    body_user = {
-        'first_name': 'first_name',
-        'last_name': 'last_name',
-        'email': 'email@mail.com',
-        "password": "1234",
-        "birth_date": "1990-01-01",
-    }
-    user = client.post('api/users', json=body_user).json()
+
     response = client.post(URI, json=body_session)
     data = response.json()
 
@@ -50,18 +63,16 @@ def test_post_session_correct_pass_succesfully():
 
 
 def test_post_session_invalid_password_fails():
+    user_email = 'user@email.com'
+    user_password = '1234pass'
+    create_user({'email': user_email, 'password': user_password})
+
     body_session = {
-        'email': 'email@mail.com',
-        'password': "12345",
+        'email': user_email,
+        'password': 'wrong-password',
     }
-    body_user = {
-        'first_name': 'first_name',
-        'last_name': 'last_name',
-        'email': 'email@mail.com',
-        "password": "1234",
-        "birth_date": "1990-01-01",
-    }
-    client.post('api/users', json=body_user)
+
     response = client.post(URI, json=body_session)
+    data = response.json()
     assert response.status_code == 400
-    assert response.json()["detail"] == "Incorrect Password"
+    assert data["detail"] == "Incorrect Password"

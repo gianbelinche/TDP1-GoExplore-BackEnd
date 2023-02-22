@@ -31,6 +31,7 @@ def test_user_create_succesfully():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -48,6 +49,7 @@ def test_user_create_existing_user_fails():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -66,6 +68,7 @@ def test_user_create_wrong_body():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -92,6 +95,7 @@ def test_user_create_and_retrieve_successfully():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -108,6 +112,7 @@ def test_user_create_existing_user_with_other_fields_different_fails():
         'first_name': 'another_first_name',
         'last_name': 'another_last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "another_1234",
         "birth_date": "1991-01-01",
     }
@@ -127,6 +132,7 @@ def test_user_create_user_with_extra_fields_ignores_it():
         'last_name': 'another_last_name',
         'email': 'email@mail.com',
         'password': "another_1234",
+        'host': False,
         "birth_date": "1991-01-01",
         "extra_field": "extra_field",
     }
@@ -145,6 +151,7 @@ def test_user_add_card_succesfully():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -166,6 +173,7 @@ def test_user_add_card_and_retreive_succesfully():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -188,6 +196,7 @@ def test_user_add_two_cards_and_retreive_succesfully():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }
@@ -216,6 +225,7 @@ def test_user_add_invalid_card():
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'host': False,
         'password': "1234",
         "birth_date": "1990-01-01",
     }

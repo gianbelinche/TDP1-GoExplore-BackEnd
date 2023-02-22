@@ -30,6 +30,7 @@ class UserSchemaBase(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=3)
     birth_date: str = Field(..., min_length=3)
+    host: bool
 
 
 class UserCreateSchema(UserSchemaBase):
@@ -52,5 +53,6 @@ class UserSchema(UserSchemaBase):
             id=user.id if user.id else "",
             password=user.password,
             birth_date=user.birth_date,
+            host=user.host,
             cards=cards,
         )
