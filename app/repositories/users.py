@@ -113,6 +113,15 @@ class PersistentUserRepository(UserRepository):
                 expiry_date=card['expiry_date'],
             )
 
+        def __deserialize_favourite(card: dict) -> Card:
+            return Card(
+                number=card['number'],
+                security_code=card['security_code'],
+                expiry_date=card['expiry_date'],
+            )
+
+        cards = list(map(__deserialize_card, data['cards']))
+
         cards = list(map(__deserialize_card, data['cards']))
 
         return User(

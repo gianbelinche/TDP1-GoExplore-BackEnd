@@ -34,3 +34,11 @@ class User:
         self.host = host
         self.cards = cards
         self.favourites = favourites
+
+    def add_favourite(self, favourite: str):
+        if favourite not in self.favourites:
+            self.favourites.append(favourite)
+
+    def remove_favourite(self, favourite: str):
+        if favourite in self.favourites:
+            self.favourites.remove(favourite)

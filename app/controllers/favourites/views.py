@@ -1,5 +1,9 @@
 from fastapi.exceptions import HTTPException
-from app.commands.favourites.favourites import AddFavouriteCommand, GetFavouritesCommand
+from app.commands.favourites.favourites import (
+    AddFavouriteCommand,
+    DeleteFavouriteCommand,
+    GetFavouritesCommand,
+)
 from app.repositories.experience import PersistentExperienceRepository
 from typing import List
 from fastapi import status, APIRouter
@@ -30,6 +34,24 @@ async def add_favourite(user_id: str, favourite_body: FavouriteSchema):
         ).execute()
 
         return favourite_body
+    except GoExploreError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Error"
+        )
+
+
+@router.delete(
+    '/users/{user_id}/favourites/{experience_id}',
+    status_code=status.HTTP_200_OK,
+)
+async def delete_favourite(user_id: str, experience_id: str):
+    try:
+        user_repository = PersistentUserRepository()
+        DeleteFavouriteCommand(user_repository, user_id, experience_id).execute()
+        return True
     except GoExploreError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:

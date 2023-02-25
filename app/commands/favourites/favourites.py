@@ -66,3 +66,22 @@ class GetFavouritesCommand:
         experiences = self.experience_repository.get_experiences_by_id(user.favourites)
 
         return list(map(lambda x: ExperienceSchema.from_model(x), experiences))
+
+
+class DeleteFavouriteCommand:
+    def __init__(
+        self, user_repository: UserRepository, user_id: str, experience_id: str
+    ):
+        self.user_repository = user_repository
+        self.experience_id = experience_id
+        self.user_id = user_id
+
+    def execute(self) -> None:
+        user: User
+        try:
+            user = self.user_repository.get_user(self.user_id)
+        except Exception:
+            raise UserNotFoundError
+
+        user.remove_favourite(self.experience_id)
+        self.user_repository.update_user(user)
