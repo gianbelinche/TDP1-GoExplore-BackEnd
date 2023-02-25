@@ -17,6 +17,8 @@ class User:
         id: str,
         password: str,
         birth_date: str,
+        identification_number: str,
+        phone_number: str,
         host: bool,
         cards: List[Card],
         favourites: List[str],
@@ -27,6 +29,8 @@ class User:
         self.id = id
         self.password = password
         self.birth_date = birth_date
+        self.identification_number = identification_number
+        self.phone_number = phone_number
         self.host = host
         self.cards = cards
         self.favourites = favourites

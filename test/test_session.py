@@ -14,6 +14,8 @@ def create_user(fields={}):
         'first_name': 'first_name',
         'last_name': 'last_name',
         'email': 'email@mail.com',
+        'identification_number': '40400400',
+        'phone_number': '1180808080',
         'password': "1234",
         'host': False,
         "birth_date": "1990-01-01",

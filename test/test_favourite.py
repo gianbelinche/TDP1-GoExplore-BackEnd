@@ -18,6 +18,8 @@ def create_user():
         'email': 'email@mail.com',
         'password': "1234",
         'host': False,
+        'identification_number': '40400400',
+        'phone_number': '1180808080',
         "birth_date": "1990-01-01",
     }
     response = client.post("api/users", json=body)
