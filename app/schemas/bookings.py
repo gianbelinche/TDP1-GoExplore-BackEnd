@@ -8,6 +8,7 @@ class BookingSchemaBase(BaseModel):
     reserver_id: str = Field(..., min_length=3)
     owner_id: str = Field(..., min_length=3)
     date: str = Field(..., min_length=3)
+    guests: int = Field(...)
 
 
 class BookingCreateSchema(BookingSchemaBase):
@@ -25,4 +26,5 @@ class BookingSchema(BookingSchemaBase):
             owner_id=booking.owner_id,
             date=booking.date,
             id=booking.id,
+            guests=booking.guests,
         )

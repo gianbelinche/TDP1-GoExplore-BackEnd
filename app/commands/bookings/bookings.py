@@ -26,6 +26,7 @@ class CreateBookingCommand:
             date=self.booking_data.date,
             owner_id=self.booking_data.owner_id,
             id=str(uuid.uuid4()),
+            guests=self.booking_data.guests,
         )
         already_exists = self.booking_repository.booking_exists(
             booking.experience_id, booking.reserver_id, booking.date

@@ -54,6 +54,7 @@ class PersistentBookingRepository(BookingRepository):
             "reserver_id": booking.reserver_id,
             "date": booking.date,
             "owner_id": booking.owner_id,
+            "guests": booking.guests,
         }
 
         return serialized
@@ -66,4 +67,5 @@ class PersistentBookingRepository(BookingRepository):
             reserver_id=data['reserver_id'],
             date=data['date'],
             owner_id=data['owner_id'],
+            guests=data['guests'],
         )

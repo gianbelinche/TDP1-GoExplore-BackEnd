@@ -78,6 +78,7 @@ def test_booking_create_succesfully():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     response = client.post(URI, json=booking_body)
@@ -100,6 +101,7 @@ def test_booking_create_with_missing_data():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     invalid_variations = {
@@ -107,6 +109,7 @@ def test_booking_create_with_missing_data():
         'reserver_id': [None, '', 'aa'],
         'date': [None, '', 'aa'],
         'owner_id': [None, '', 'aa'],
+        "guests": [None, '', 'aa'],
     }
 
     invalid_bodies = generate_invalid(booking_body, invalid_variations)
@@ -131,6 +134,7 @@ def test_booking_create_duplicated():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     client.post(URI, json=booking_body)
@@ -153,6 +157,7 @@ def test_booking_create_with_2_reservers():
         "reserver_id": reserver1['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     booking_body2 = {
@@ -160,6 +165,7 @@ def test_booking_create_with_2_reservers():
         "reserver_id": reserver2['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     response1 = client.post(URI, json=booking_body1)
@@ -188,6 +194,7 @@ def test_booking_create_2_same_user_different_date():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     booking_body2 = {
@@ -195,6 +202,7 @@ def test_booking_create_2_same_user_different_date():
         "reserver_id": reserver['id'],
         "date": "2022-12-14",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     response1 = client.post(URI, json=booking_body1)
@@ -232,6 +240,7 @@ def test_booking_get_by_reserver_one():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     client.post(URI, json=booking_body)
@@ -255,6 +264,7 @@ def test_booking_get_by_reserver_two():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
 
     booking_body2 = {
@@ -262,6 +272,7 @@ def test_booking_get_by_reserver_two():
         "reserver_id": reserver['id'],
         "date": "2022-12-14",
         "owner_id": user['id'],
+        "guests": 2,
     }
     reserver_id = reserver['id']
 
@@ -298,6 +309,7 @@ def test_booking_get_by_owner_one():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
     user_id = user['id']
 
@@ -321,12 +333,14 @@ def test_booking_get_by_owner_two():
         "reserver_id": reserver1['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
     booking_body2 = {
         "experience_id": experience['id'],
         "reserver_id": reserver2['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "guests": 2,
     }
     client.post(URI, json=booking_body1)
     client.post(URI, json=booking_body2)
