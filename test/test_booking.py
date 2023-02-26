@@ -77,6 +77,7 @@ def test_booking_create_succesfully():
         "experience_id": experience['id'],
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
+        "amount": 30,
         "owner_id": user['id'],
         "guests": 2,
     }
@@ -101,6 +102,7 @@ def test_booking_create_with_missing_data():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -134,6 +136,7 @@ def test_booking_create_duplicated():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -157,6 +160,7 @@ def test_booking_create_with_2_reservers():
         "reserver_id": reserver1['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -165,6 +169,7 @@ def test_booking_create_with_2_reservers():
         "reserver_id": reserver2['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -194,6 +199,7 @@ def test_booking_create_2_same_user_different_date():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -202,6 +208,7 @@ def test_booking_create_2_same_user_different_date():
         "reserver_id": reserver['id'],
         "date": "2022-12-14",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -240,6 +247,7 @@ def test_booking_get_by_reserver_one():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -264,6 +272,7 @@ def test_booking_get_by_reserver_two():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
 
@@ -272,6 +281,7 @@ def test_booking_get_by_reserver_two():
         "reserver_id": reserver['id'],
         "date": "2022-12-14",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
     reserver_id = reserver['id']
@@ -309,6 +319,7 @@ def test_booking_get_by_owner_one():
         "reserver_id": reserver['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
     user_id = user['id']
@@ -333,6 +344,7 @@ def test_booking_get_by_owner_two():
         "reserver_id": reserver1['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
     booking_body2 = {
@@ -340,6 +352,7 @@ def test_booking_get_by_owner_two():
         "reserver_id": reserver2['id'],
         "date": "2022-12-13",
         "owner_id": user['id'],
+        "amount": 30,
         "guests": 2,
     }
     client.post(URI, json=booking_body1)

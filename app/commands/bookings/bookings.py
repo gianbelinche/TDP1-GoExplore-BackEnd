@@ -25,6 +25,7 @@ class CreateBookingCommand:
             reserver_id=self.booking_data.reserver_id,
             date=self.booking_data.date,
             owner_id=self.booking_data.owner_id,
+            amount=self.booking_data.amount,
             id=str(uuid.uuid4()),
             guests=self.booking_data.guests,
         )

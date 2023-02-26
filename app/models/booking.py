@@ -6,6 +6,7 @@ class Booking:
         owner_id: str,
         date: str,
         id: str,
+        amount: int,
         guests: int,
     ):
         self.experience_id = experience_id
@@ -13,4 +14,5 @@ class Booking:
         self.owner_id = owner_id
         self.date = date
         self.id = id
+        self.amount = amount
         self.guests = guests
