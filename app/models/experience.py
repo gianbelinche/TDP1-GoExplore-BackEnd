@@ -19,6 +19,8 @@ class Category(Enum):
     Sports = "Sports"
     Entertainment = "Entertainment"
     OpenAir = "Outdoors"
+    GoingOut = "Going Out"
+    Events = "Events"
 
 
 class Experience:
